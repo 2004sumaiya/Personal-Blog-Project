@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A serene gallery of Qur’an verses and Duas for reflection">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Sumaiya Dingankar">
+  <meta name="theme-color" content="#faf9f7">
+  <link rel="icon" href="images/stack-of-books.png" type="image/png">
+  <title>Qur’an & Duas Gallery</title>
+  <!-- Linking font awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <!-- Linking custom css -->
+  <link rel="stylesheet" href="./style.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #faf9f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Masonry Gallery */
+    .masonry-gallery {
+      columns: 4 200px;
+      column-gap: 20px;
+      padding: 100px 40px 40px;
+      margin-top: 70px;
+      transition: all 0.3s;
+    }
+
+    .masonry-gallery img {
+      width: 100%;
+      margin-bottom: 20px;
+      border-radius: 18px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .masonry-gallery img:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Lightbox */
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(12px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      animation: fadeIn 0.4s;
+    }
+
+    #lightbox img {
+      max-width: 85%;
+      max-height: 80%;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      animation: zoomIn 0.4s;
+    }
+
+    #close {
+      position: absolute;
+      top: 25px;
+      right: 40px;
+      font-size: 38px;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s;
+    }
+
+    #close:hover {
+      transform: scale(1.2);
+    }
+
+    /* Popup */
+    #popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(17, 24, 39, 0.65);
+      backdrop-filter: blur(12px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      animation: fadeIn 0.5s;
+    }
+
+    .popup-box {
+      background: #fffaf0;
+      border-radius: 25px;
+      padding: 40px 45px;
+      max-width: 540px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      border: 3px solid #FACC15;
+      animation: slideUp 0.6s;
+    }
+
+    .popup-box h2 {
+      color: #111827;
+      margin-bottom: 20px;
+      font-size: 24px;
+      letter-spacing: 0.5px;
+    }
+
+    .popup-box p {
+      color: #333;
+      font-size: 16px;
+      line-height: 1.7;
+      margin-bottom: 25px;
+    }
+
+    .popup-box a {
+      color: #111827;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    .popup-box a:hover {
+      color: #FACC15;
+    }
+
+    .popup-box button {
+      background: #FACC15;
+      color: #111827;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 30px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s;
+    }
+
+    .popup-box button:hover {
+      background: #111827;
+      color: #FACC15;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes zoomIn {
+      0% {
+        transform: scale(0.9);
+        opacity: 0;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      0% {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Image disclaimer */
+    .image-disclaimer {
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+      margin: 40px 0 0;
+      font-style: italic;
+    }
+
+    .image-disclaimer a {
+      color: #6b4eff;
+      text-decoration: none;
+    }
+
+    .image-disclaimer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media(max-width:1024px) {
+      .masonry-gallery {
+        columns: 3 200px;
+        padding: 90px 25px;
+      }
+    }
+
+    @media(max-width:768px) {
+      .masonry-gallery {
+        columns: 2 150px;
+        padding: 80px 20px;
+      }
+
+      .popup-box {
+        max-width: 90%;
+        padding: 25px 20px;
+        border-radius: 18px;
+      }
+
+      .popup-box h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+      }
+
+      .popup-box p {
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .popup-box button {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+      }
+
+      .image-disclaimer {
+        font-size: 12px;
+        padding: 0 15px;
+        margin: 30px auto 50px;
+        line-height: 1.6;
+      }
+    }
+
+    @media(max-width:480px) {
+      .masonry-gallery {
+        columns: 1 100px;
+        padding: 70px 15px;
+      }
+
+      .popup-box {
+        padding: 22px 15px;
+        font-size: 13px;
+      }
+
+      .popup-box h2 {
+        font-size: 18px;
+      }
+
+      .popup-box p {
+        font-size: 13px;
+      }
+
+      .popup-box button {
+        font-size: 13px;
+        padding: 9px 20px;
+      }
+
+      .image-disclaimer {
+        font-size: 11.5px;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+  <!-- Header/Navbar -->
+  <header>
+    <nav class="navbar section-content">
+      <img src="./images/nav-logo.png" alt="" width="120px" height="70px" class="nav-logo">
+
+      <ul class="nav-menu">
+        <button id="menu-close-button" class="fas fa-times"></button>
+        <li class="nav-item"><a href="./index.html" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="./blogs.html" class="nav-link">Blog</a></li>
+        <li class="nav-item"><a href="./about.html" class="nav-link">About</a></li>
+        <!-- Dropdown -->
+        <li class="nav-item dropdown">
+          <button class="nav-link dropdown-btn">Categories ▾</button>
+          <ul class="dropdown-menu">
+            <li><a href="./learning-arabic.html">Learning Arabic</a></li>
+            <li><a href="./quran-duas.html">Quran & Duas</a></li>
+          </ul>
+        </li>
+
+      </ul>
+      <button id="menu-open-button" class="fas fa-bars"></button>
+    </nav>
+  </header>
+  <!-- 🌙 Popup Disclaimer -->
+  <div id="popup-overlay">
+    <div class="popup-box">
+      <h2>🌸!ٱلسَّلَامُ عَلَيْكُمْ وَرَحْمَةُ ٱللّٰهِ وَبَرَكَاتُهُ</h2>
+      <p>
+        Dear visitor, these images are lovingly gathered from
+        <a href="https://www.pinterest.com/" target="_blank" rel="noopener noreferrer">Pinterest</a>,
+        shared here to spread reminders of <strong>faith, beauty, and reflection</strong>.
+        <br><br>
+        Each piece is a gentle reminder of Allah’s grace —
+        <em>and a reflection of hearts that found beauty in His words.</em>
+        <br><br>
+        🌼 <strong>May Allah ﷻ reward</strong> every original creator with goodness, light, and barakah in their
+        efforts.
+      </p>
+      <button id="popup-close">Enter the Gallery 🤍</button>
+    </div>
+  </div>
+
+  <section class="masonry-gallery">
+    <img src="./quran-duas-images/img1.jpeg" alt="Quran verse">
+    <img src="./quran-duas-images/img2.jpeg" alt="Arabic quote">
+    <img src="./quran-duas-images/img3.jpeg" alt="Dua image">
+    <img src="./quran-duas-images/img4.jpeg" alt="Quran verse">
+    <img src="./quran-duas-images/img5.jpeg" alt="Arabic quote">
+    <img src="./quran-duas-images/img6.jpeg" alt="Dua image">
+    <img src="./quran-duas-images/img7.jpeg" alt="Dua image">
+    <img src="./quran-duas-images/img8.jpeg" alt="Dua image">
+    <img src="./quran-duas-images/img9.jpeg" alt="Dua image">
+    <img src="./quran-duas-images/img10.jpeg" alt="Dua image">
+    <img src="./quran-duas-images/img11.jpeg" alt="Quran verse">
+    <img src="./quran-duas-images/img12.jpeg" alt="Arabic quote">
+    <img src="./quran-duas-images/img13.jpeg" alt="Dua image">
+    <img src="./quran-duas-images/img14.jpeg" alt="Quran verse">
+    <img src="./quran-duas-images/img15.jpeg" alt="Arabic quote">
+    <img src="./quran-duas-images/img16.jpeg" alt="Dua image">
+    <img src="./quran-duas-images/img17.jpeg" alt="Dua image">
+    <img src="./quran-duas-images/img18.jpeg" alt="Dua image">
+    <img src="./quran-duas-images/img19.jpeg" alt="Dua image">
+    <img src="./quran-duas-images/img20.jpeg" alt="Dua image">
+    <img src="./quran-duas-images/img21.jpeg" alt="Dua image">
+    <img src="./quran-duas-images/img22.jpeg" alt="Dua image">
+    <img src="./quran-duas-images/img23.jpeg" alt="Dua image">
+    <img src="./quran-duas-images/img24.jpeg" alt="Dua image">
+    <img src="./quran-duas-images/img25.jpeg" alt="Dua image">
+
+
+  </section>
+
+  <!-- Lightbox popup -->
+  <div id="lightbox">
+    <span id="close">×</span>
+    <img id="lightbox-img" src="" alt="">
+  </div>
+
+  <p class="image-disclaimer">
+    🌸 Images featured here are sourced from <a href="https://www.pinterest.com/" target="_blank"
+      rel="noopener noreferrer">Pinterest</a>.
+    All rights belong to their respective owners. I do not claim ownership.
+  </p>
+
+  <script>
+    const images = document.querySelectorAll('.masonry-gallery img');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeBtn = document.getElementById('close');
+
+    images.forEach(img => {
+      img.addEventListener('click', () => {
+        lightbox.style.display = 'flex';
+        lightboxImg.src = img.src;
+        document.body.style.overflow = 'hidden'; // disable scroll
+      });
+    });
+
+    closeBtn.addEventListener('click', () => {
+      lightbox.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    });
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        lightbox.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+    });
+
+    // 🌿 Popup Logic
+    window.addEventListener("load", () => {
+      const popup = document.getElementById("popup-overlay");
+      const closeBtn = document.getElementById("popup-close");
+
+      closeBtn.addEventListener("click", () => {
+        popup.style.display = "none";
+      });
+    });
+  </script>
+  <script src="./script.js">
+
+  </script>
+
+</body>
+
+</html>
